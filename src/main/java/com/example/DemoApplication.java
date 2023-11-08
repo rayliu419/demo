@@ -1,12 +1,9 @@
 package com.example;
 
+import org.example.ThirdLibHello;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
-
-import org.example.ThirdLibHello;
-import org.springframework.context.annotation.Import;
 
 /**
  * To import external jar, build the artifact of external jar.
