@@ -1,6 +1,7 @@
 package com.example.dao;
 
 import com.example.entity.User;
+import com.fasterxml.jackson.core.JsonProcessingException;
 
 import java.util.Optional;
 
