@@ -37,7 +37,7 @@ public class UserController {
         List<UserVO> userVOList = userService.getListByName(name).stream()
                 .map(VOConverter::fromUserBOToUserVO)
                 .toList();
-        getUserByNameResponseDTO.setUsers(userVOList);
+        getUserByNameResponseDTO.setUserVOList(userVOList);
         return getUserByNameResponseDTO;
     }
 

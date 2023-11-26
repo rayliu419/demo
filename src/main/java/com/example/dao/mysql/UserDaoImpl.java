@@ -1,14 +1,12 @@
 package com.example.dao.mysql;
 
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.example.dao.UserDao;
 import com.example.dao.mysql.mapper.UserMapper;
 import com.example.entity.UserEntity;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 
 import java.util.List;
 import java.util.Optional;
@@ -35,7 +33,7 @@ import java.util.UUID;
  */
 @Component
 @ConditionalOnProperty(name = "db.type", havingValue = "mysql")
-@Log4j2
+@Slf4j
 public class UserDaoImpl implements UserDao {
 
     @Autowired

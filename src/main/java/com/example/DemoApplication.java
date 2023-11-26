@@ -1,11 +1,10 @@
 package com.example;
 
-import com.example.service.UserService;
 import org.mybatis.spring.annotation.MapperScan;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 /**
  * To import external jar, build the artifact of external jar.
@@ -23,6 +22,7 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 // 让第三方Bean生效的第一种方法：直接初始化第三方库的切面Bean
 // @Import(org.example.interceptor.ThirdLibLogInterceptor.class)
 @MapperScan("com.example.dao.mysql.mapper") // mybatis的Scan Mapper
+@EnableJpaRepositories(basePackages = "com.example.dao.mysql.repository")
 public class DemoApplication {
 
 	public static void main(String[] args) {
