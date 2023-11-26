@@ -1,23 +1,25 @@
 package com.example.dao.redis.impl;
 
 import com.example.dao.UserDao;
-import com.example.entity.User;
-import com.fasterxml.jackson.core.JsonProcessingException;
+import com.example.entity.UserEntity;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.log4j.Log4j2;
-import org.aspectj.apache.bcel.classfile.Module;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Optional;
 
 
 /**
  * docker启动redis:
  * docker run -p 6379:6379 -d redis:latest redis-server
+ * 进入容器：
  * docker exec -it {redis_container_id} bash
+ * 运行redis命令行
+ *
  *
  */
 @Component
@@ -35,7 +37,7 @@ public class UserDaoImpl implements UserDao {
     private ObjectMapper objectMapper = new ObjectMapper();
 
     @Override
-    public boolean createUser(User user) {
+    public boolean createUser(UserEntity user) {
         try {
             String value = objectMapper.writeValueAsString(user);
             System.out.println(String.format("id - %s, value - %s", user.getId(), value));
@@ -52,7 +54,12 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public boolean updateUser(User user) {
+    public List<UserEntity> getListByName(String name) {
+        return null;
+    }
+
+    @Override
+    public boolean updateUser(UserEntity user) {
         return false;
     }
 

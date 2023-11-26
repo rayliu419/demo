@@ -18,12 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class HelloController {
 
-    @Autowired
-    UserService userService;
-
     @GetMapping("/hello")
     public String hello(@RequestParam(value = "name", defaultValue = "World") String name) {
-        userService.getUserByUserId("111");
         return String.format("Hello %s!", name);
     }
 }

@@ -1,17 +1,19 @@
 package com.example.dao;
 
-import com.example.entity.User;
-import com.fasterxml.jackson.core.JsonProcessingException;
+import com.example.entity.UserEntity;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface UserDao {
 
-    boolean createUser(User user);
+    boolean createUser(UserEntity user);
 
     Optional<String> getUserByUserId(String id);
 
-    boolean updateUser(User user);
+    List<UserEntity> getListByName(String name);
+
+    boolean updateUser(UserEntity user);
 
     boolean deleteUserByUserId(String id);
 }
