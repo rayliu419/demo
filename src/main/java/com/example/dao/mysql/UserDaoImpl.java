@@ -1,11 +1,16 @@
 package com.example.dao.mysql;
 
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.OrderItem;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.example.dao.UserDao;
 import com.example.dao.mysql.mapper.UserMapper;
 import com.example.entity.UserEntity;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -60,11 +65,34 @@ public class UserDaoImpl implements UserDao {
 //        // BaseMapper在没有结果的时候，返回empty List，不是null
 //        return userMapper.selectList(queryWrapper);
         // 2. 使用自定义的SQL查询
-        return getListByNameBySQL(name);
+//        return getListByNameBySQL(name);
+        // 3. 分页+过滤结果
+        return getResultByPage(name);
     }
 
     private List<UserEntity> getListByNameBySQL(String name) {
         return userMapper.getListByNameSQL(name);
+    }
+
+    /**
+     * 分页加过滤显示
+     * @param name
+     * @return
+     */
+    public List<UserEntity> getResultByPage(String name) {
+        // current从1开始
+        // 分页的逻辑有点奇怪，跟想象的有点不一样
+        Page page = new Page<>(1, 2);
+        // 排序
+//        page.addOrder(OrderItem.asc("name"));
+        LambdaQueryWrapper<UserEntity> queryWrapper = Wrappers.lambdaQuery();
+        // 过滤
+        queryWrapper.eq(UserEntity::getName, name);
+        Page<UserEntity> entityPage = userMapper.selectPage(page, queryWrapper);
+        log.info("total result -------------> {}", entityPage.getTotal());
+        log.info("current page -------------> {}", entityPage.getCurrent());
+        log.info("current size -------------> {}", entityPage.getSize());
+        return entityPage.getRecords();
     }
 
     @Override
