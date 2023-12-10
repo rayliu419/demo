@@ -21,7 +21,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @EnableAspectJAutoProxy
 // 让第三方Bean生效的第一种方法：直接初始化第三方库的切面Bean
 // @Import(org.example.interceptor.ThirdLibLogInterceptor.class)
-@MapperScan("com.example.dao.mysql.mapper") // mybatis的Scan Mapper
+@MapperScan("com.example.dao.mysql") // mybatis的Scan Mapper
+@MapperScan("com.example.repo.mysql") // mybatis的repo scan mapper
 @EnableJpaRepositories(basePackages = "com.example.dao.mysql.repository")
 public class DemoApplication {
 

@@ -4,7 +4,9 @@ import com.example.dto.converter.RequestDTOConverterMapper;
 import com.example.dto.converter.VOConverterMapper;
 import com.example.dto.domain.UserBO;
 import com.example.dto.request.CreateUserRequestDTO;
+import com.example.dto.response.GetAllByNameResponseDTO;
 import com.example.dto.response.GetUserByNameResponseDTO;
+import com.example.dto.vo.UserDepartmentVO;
 import com.example.dto.vo.UserVO;
 import com.example.service.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -38,6 +40,17 @@ public class UserController {
                 .toList();
         getUserByNameResponseDTO.setUserVOList(userVOList);
         return getUserByNameResponseDTO;
+    }
+
+    @GetMapping("/getAll")
+    @ResponseBody
+    public GetAllByNameResponseDTO getAllByName(@RequestParam(value = "name") String name) {
+        GetAllByNameResponseDTO getAllByNameResponseDTO = new GetAllByNameResponseDTO();
+        List<UserDepartmentVO> userDepartmentVOList = userService.getUserDepartmentListByName(name).stream()
+                .map(VOConverterMapper.INSTANCE::fromUserDepartmentBOToUserDepartmentVO)
+                .toList();
+        getAllByNameResponseDTO.setUserDepartmentVOList(userDepartmentVOList);
+        return getAllByNameResponseDTO;
     }
 
 }

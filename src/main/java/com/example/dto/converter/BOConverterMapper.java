@@ -2,6 +2,8 @@ package com.example.dto.converter;
 
 import com.example.dto.domain.DepartmentBO;
 import com.example.dto.domain.UserBO;
+import com.example.dto.domain.UserDepartmentBO;
+import com.example.dto.repo.UserDepartmentDTO;
 import com.example.entity.DepartmentEntity;
 import com.example.entity.UserEntity;
 import org.mapstruct.Mapper;
@@ -22,4 +24,6 @@ public interface BOConverterMapper {
     DepartmentEntity fromDepartmentBOToDepartmentEntity(DepartmentBO departmentBO);
 
     DepartmentBO fromDepartmentEntityToDepartmentBO(DepartmentEntity entity);
+
+    UserDepartmentBO fromUserDepartmentDTOToUserDepartmentBO(UserDepartmentDTO dto);
 }
