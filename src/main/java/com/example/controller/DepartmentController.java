@@ -1,7 +1,7 @@
 package com.example.controller;
 
-import com.example.dto.converter.RequestDTOConverter;
-import com.example.dto.converter.VOConverter;
+import com.example.dto.converter.RequestDTOConverterMapper;
+import com.example.dto.converter.VOConverterMapper;
 import com.example.dto.domain.DepartmentBO;
 import com.example.dto.request.CreateDepartmentRequestDTO;
 import com.example.dto.response.GetDepartmentByNameResponseDTO;
@@ -24,9 +24,10 @@ public class DepartmentController {
     @PostMapping("/create")
     public String create(@RequestBody CreateDepartmentRequestDTO createDepartmentRequestDTO) {
         log.info("In DepartmentController create");
-        DepartmentBO bo = RequestDTOConverter.fromCreateDepartmentRequest(createDepartmentRequestDTO);
+        DepartmentBO bo = RequestDTOConverterMapper.INSTANCE
+                .fromCreateDepartmentRequestToDepartmentBO(createDepartmentRequestDTO);
         departmentService.createDepartment(bo);
-        return "create user";
+        return "create department";
     }
 
     @GetMapping("/get")
@@ -34,7 +35,7 @@ public class DepartmentController {
     public GetDepartmentByNameResponseDTO getByName(@RequestParam(value = "name") String name) {
         GetDepartmentByNameResponseDTO dto = new GetDepartmentByNameResponseDTO();
         List<DepartmentVO> departmentVOS = departmentService.getListByName(name).stream()
-                .map(VOConverter::fromDepartmentBOToDepartmentVO)
+                .map(VOConverterMapper.INSTANCE::fromDepartmentBOToDepartmentVO)
                 .toList();
         dto.setDepartmentVOS(departmentVOS);
         return dto;

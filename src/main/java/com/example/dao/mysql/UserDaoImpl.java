@@ -19,8 +19,10 @@ import java.util.UUID;
 
 
 /**
- * docker 启动:
+ * docker 首次启动:
  * docker run -itd --name mysql-demo -p 3306:3306 -e MYSQL_ROOT_PASSWORD=123456 mysql
+ * 后续运行：
+ * docker start mysql-demo
  * 进入容器:
  * docker exec -it 858fa48aed57 bash
  * 运行命令行:
@@ -32,8 +34,6 @@ import java.util.UUID;
  * desc user;
  * 关掉进程：
  * docker stop {mysql_container_id}
- * 后续运行：
- * docker start mysql-demo
  *
  */
 @Component
@@ -67,7 +67,8 @@ public class UserDaoImpl implements UserDao {
         // 2. 使用自定义的SQL查询
 //        return getListByNameBySQL(name);
         // 3. 分页+过滤结果
-        return getResultByPage(name);
+//        return getResultByPage(name);
+        return getListByNameBySQL(name);
     }
 
     private List<UserEntity> getListByNameBySQL(String name) {

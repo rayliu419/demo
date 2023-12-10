@@ -6,8 +6,11 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+/**
+ * Spring JPA的方式写数据访问层
+ */
 @Repository
-public interface DepartmentRepository extends JpaRepository<DepartmentEntity, Long> {
+public interface DepartmentRepository extends JpaRepository<DepartmentEntity, Integer> {
 
     /**
      * 假设有个属性叫name, JPA可以自动生产SQL，findByXXX()。

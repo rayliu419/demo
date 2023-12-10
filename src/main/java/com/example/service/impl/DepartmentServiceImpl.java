@@ -1,8 +1,7 @@
 package com.example.service.impl;
 
 import com.example.dao.DepartmentDao;
-import com.example.dto.converter.BOConverter;
-import com.example.dto.converter.VOConverter;
+import com.example.dto.converter.BOConverterMapper;
 import com.example.dto.domain.DepartmentBO;
 import com.example.entity.DepartmentEntity;
 import com.example.service.DepartmentService;
@@ -29,7 +28,7 @@ public class DepartmentServiceImpl implements DepartmentService {
     @Override
     public boolean createDepartment(DepartmentBO bo) {
         log.info("In Service, createDepartment");
-        DepartmentEntity entity = BOConverter.fromDepartmentBOToDepartmentEntity(bo);
+        DepartmentEntity entity = BOConverterMapper.INSTANCE.fromDepartmentBOToDepartmentEntity(bo);
         return departmentDao.createDepartment(entity);
     }
 
@@ -37,7 +36,7 @@ public class DepartmentServiceImpl implements DepartmentService {
     public List<DepartmentBO> getListByName(String name) {
         List<DepartmentEntity> entities = departmentDao.getListByName(name);
         return entities.stream()
-                .map(BOConverter::fromDepartmentEntityToDepartmentBO)
+                .map(BOConverterMapper.INSTANCE::fromDepartmentEntityToDepartmentBO)
                 .collect(Collectors.toList());
     }
 }

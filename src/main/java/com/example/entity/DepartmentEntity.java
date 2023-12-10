@@ -12,13 +12,9 @@ public class DepartmentEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private int id;
 
     private String name;
 }
 
-// 创建表命令
-//  create table department (
-//       id int AUTO_INCREMENT primary key not null,
-//       name varchar(128) null
-//   )
+

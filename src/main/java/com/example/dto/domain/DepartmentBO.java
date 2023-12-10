@@ -10,4 +10,6 @@ import lombok.Data;
 public class DepartmentBO {
 
     public String name;
+
+    public int id;
 }

@@ -1,7 +1,7 @@
 package com.example.controller;
 
-import com.example.dto.converter.RequestDTOConverter;
-import com.example.dto.converter.VOConverter;
+import com.example.dto.converter.RequestDTOConverterMapper;
+import com.example.dto.converter.VOConverterMapper;
 import com.example.dto.domain.UserBO;
 import com.example.dto.request.CreateUserRequestDTO;
 import com.example.dto.response.GetUserByNameResponseDTO;
@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("user")
@@ -25,7 +24,7 @@ public class UserController {
     @PostMapping("/create")
     public String create(@RequestBody CreateUserRequestDTO createUserRequest) {
         log.info("In UserController create");
-        UserBO userBO = RequestDTOConverter.fromCreateUserRequest(createUserRequest);
+        UserBO userBO = RequestDTOConverterMapper.INSTANCE.fromCreateUserRequestToUserBO(createUserRequest);
         userService.createUser(userBO);
         return "create user";
     }
@@ -35,7 +34,7 @@ public class UserController {
     public GetUserByNameResponseDTO getByName(@RequestParam(value = "name") String name) {
         GetUserByNameResponseDTO getUserByNameResponseDTO = new GetUserByNameResponseDTO();
         List<UserVO> userVOList = userService.getListByName(name).stream()
-                .map(VOConverter::fromUserBOToUserVO)
+                .map(VOConverterMapper.INSTANCE::fromUserBOToUserVO)
                 .toList();
         getUserByNameResponseDTO.setUserVOList(userVOList);
         return getUserByNameResponseDTO;
