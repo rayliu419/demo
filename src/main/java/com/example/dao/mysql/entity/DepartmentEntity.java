@@ -1,4 +1,4 @@
-package com.example.entity;
+package com.example.dao.mysql.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

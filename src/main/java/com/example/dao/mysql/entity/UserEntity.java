@@ -1,4 +1,4 @@
-package com.example.entity;
+package com.example.dao.mysql.entity;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -22,7 +22,15 @@ public class UserEntity {
      * 在实体类与数据库表之间，字段名没有正确对应。默认情况下，MyBatis-Plus 会使用[驼峰命名规则自动匹配字段名]，
      * 但如果数据库表中的字段名与实体类字段名不匹配，需要使用@TableField 注解中的value属性指定映射的数据库表字段名。
      */
-    @TableField("value = department_id")
+    /**
+     * 第二个情况是@TableField("value = department_id") != @TableField("department_id")
+     * 为什么改完以后@TableField("value = department_id")说是SQL语句有问题，但是改成@TableField("department_id")就可以了？
+     * 会变成:
+     * SQL: INSERT INTO user  ( id, name, value = department_id )  VALUES  ( ?, ?, ? )
+     * 最为奇怪的是，以前是可以工作的。
+     *
+     */
+    @TableField("department_id")
     private int departmentId;
 }
 

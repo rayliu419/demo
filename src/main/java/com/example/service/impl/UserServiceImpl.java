@@ -1,11 +1,11 @@
 package com.example.service.impl;
 
 import com.example.dao.UserDao;
+import com.example.dao.mysql.entity.UserEntity;
 import com.example.dto.converter.BOConverterMapper;
 import com.example.dto.domain.UserBO;
 import com.example.dto.domain.UserDepartmentBO;
 import com.example.dto.repo.UserDepartmentDTO;
-import com.example.entity.UserEntity;
 import com.example.repo.UserDepartmentRepo;
 import com.example.service.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -32,17 +32,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean createUser(UserBO userBO) {
+    public boolean createUser(com.example.dto.domain.UserBO userBO) {
         log.info("In Service, createUser");
-        return userDao.createUser(BOConverterMapper.INSTANCE.fromUserBOToUserEntity(userBO));
+        return userDao.createUser(userBO);
     }
 
     @Override
-    public List<UserBO> getListByName(String name) {
-        List<UserEntity> users = userDao.getListByName(name);
-        return users.stream()
-                .map(BOConverterMapper.INSTANCE::fromUserEntityToUserBO)
-                .collect(Collectors.toList());
+    public List<com.example.dto.domain.UserBO> getListByName(String name) {
+        List<UserBO> users = userDao.getListByName(name);
+        return users;
     }
 
     @Override

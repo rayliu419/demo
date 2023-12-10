@@ -1,6 +1,6 @@
 package com.example.dao.mysql.repository;
 
-import com.example.entity.DepartmentEntity;
+import com.example.dao.mysql.entity.DepartmentEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

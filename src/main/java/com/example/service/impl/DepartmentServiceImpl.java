@@ -3,7 +3,7 @@ package com.example.service.impl;
 import com.example.dao.DepartmentDao;
 import com.example.dto.converter.BOConverterMapper;
 import com.example.dto.domain.DepartmentBO;
-import com.example.entity.DepartmentEntity;
+import com.example.dao.mysql.entity.DepartmentEntity;
 import com.example.service.DepartmentService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,17 +26,13 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     @Override
-    public boolean createDepartment(DepartmentBO bo) {
+    public boolean createDepartment(DepartmentBO departmentBO) {
         log.info("In Service, createDepartment");
-        DepartmentEntity entity = BOConverterMapper.INSTANCE.fromDepartmentBOToDepartmentEntity(bo);
-        return departmentDao.createDepartment(entity);
+        return departmentDao.createDepartment(departmentBO);
     }
 
     @Override
     public List<DepartmentBO> getListByName(String name) {
-        List<DepartmentEntity> entities = departmentDao.getListByName(name);
-        return entities.stream()
-                .map(BOConverterMapper.INSTANCE::fromDepartmentEntityToDepartmentBO)
-                .collect(Collectors.toList());
+        return departmentDao.getListByName(name);
     }
 }

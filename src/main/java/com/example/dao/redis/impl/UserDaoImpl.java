@@ -1,9 +1,11 @@
 package com.example.dao.redis.impl;
 
 import com.example.dao.UserDao;
-import com.example.entity.UserEntity;
+import com.example.dao.mysql.entity.UserEntity;
+import com.example.dto.domain.UserBO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -25,7 +27,7 @@ import java.util.Optional;
 @Component
 // 条件初始化为UserDao的一个实现
 @ConditionalOnProperty(name = "db.type", havingValue = "redis")
-@Log4j2
+@Slf4j
 public class UserDaoImpl implements UserDao {
 
     /**
@@ -37,11 +39,8 @@ public class UserDaoImpl implements UserDao {
     private ObjectMapper objectMapper = new ObjectMapper();
 
     @Override
-    public boolean createUser(UserEntity user) {
+    public boolean createUser(UserBO userBO) {
         try {
-            String value = objectMapper.writeValueAsString(user);
-            System.out.println(String.format("id - %s, value - %s", user.getId(), value));
-            redisTemplate.opsForValue().set(user.getId(), value);
             return true;
         } catch (Exception e) {
             return false;
@@ -54,7 +53,7 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public List<UserEntity> getListByName(String name) {
+    public List<UserBO> getListByName(String name) {
         return null;
     }
 

@@ -1,12 +1,12 @@
 package com.example.dao;
 
-import com.example.entity.DepartmentEntity;
+import com.example.dto.domain.DepartmentBO;
 
 import java.util.List;
 
 public interface DepartmentDao {
 
-    boolean createDepartment(DepartmentEntity departmentEntity);
+    boolean createDepartment(DepartmentBO departmentBO);
 
-    List<DepartmentEntity> getListByName(String name);
+    List<DepartmentBO> getListByName(String name);
 }

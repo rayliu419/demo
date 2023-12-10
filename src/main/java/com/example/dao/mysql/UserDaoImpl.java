@@ -1,12 +1,12 @@
 package com.example.dao.mysql;
 
-import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.example.dao.UserDao;
+import com.example.dao.mysql.entity.UserEntity;
 import com.example.dao.mysql.mapper.UserMapper;
-import com.example.entity.UserEntity;
+import com.example.dto.converter.BOConverterMapper;
+import com.example.dto.domain.UserBO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -16,6 +16,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 
 /**
@@ -45,10 +46,11 @@ public class UserDaoImpl implements UserDao {
     private UserMapper userMapper;
 
     @Override
-    public boolean createUser(UserEntity user) {
-        user.setId(String.valueOf(UUID.randomUUID()));
-        log.info("userMapper create user - {}", user.toString());
-        userMapper.insert(user);
+    public boolean createUser(UserBO userBO) {
+        UserEntity userEntity = BOConverterMapper.INSTANCE.fromUserBOToUserEntity(userBO);
+        userEntity.setId(String.valueOf(UUID.randomUUID()));
+        log.info("userMapper create user - {}", userEntity);
+        userMapper.insert(userEntity);
         return true;
     }
 
@@ -58,7 +60,7 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public List<UserEntity> getListByName(String name) {
+    public List<UserBO> getListByName(String name) {
         // 1. 使用LambdaQueryWrapper 查询
 //        LambdaQueryWrapper<UserEntity> queryWrapper = Wrappers.lambdaQuery();
 //        queryWrapper.eq(UserEntity::getName, name);
@@ -67,8 +69,11 @@ public class UserDaoImpl implements UserDao {
         // 2. 使用自定义的SQL查询
 //        return getListByNameBySQL(name);
         // 3. 分页+过滤结果
-//        return getResultByPage(name);
-        return getListByNameBySQL(name);
+        List<UserEntity> userEntityList =  getResultByPage(name);
+        return userEntityList.stream()
+                .map(BOConverterMapper.INSTANCE::fromUserEntityToUserBO)
+                .collect(Collectors.toList());
+//        return getListByNameBySQL(name);
     }
 
     private List<UserEntity> getListByNameBySQL(String name) {
