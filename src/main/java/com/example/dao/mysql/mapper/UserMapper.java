@@ -2,7 +2,6 @@ package com.example.dao.mysql.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.example.dao.mysql.entity.UserEntity;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 

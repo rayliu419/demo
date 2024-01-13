@@ -9,6 +9,9 @@ import com.example.dto.response.GetUserByNameResponseDTO;
 import com.example.dto.vo.UserDepartmentVO;
 import com.example.dto.vo.UserVO;
 import com.example.service.UserService;
+import io.micrometer.core.annotation.Timed;
+import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.MeterRegistry;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +25,9 @@ public class UserController {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    MeterRegistry meterRegistry;
 
     @PostMapping("/create")
     public String create(@RequestBody CreateUserRequestDTO createUserRequest) {
@@ -39,6 +45,7 @@ public class UserController {
                 .map(VOConverterMapper.INSTANCE::fromUserBOToUserVO)
                 .toList();
         getUserByNameResponseDTO.setUserVOList(userVOList);
+        incGetUserByNameCount(name);
         return getUserByNameResponseDTO;
     }
 
@@ -51,6 +58,22 @@ public class UserController {
                 .toList();
         getAllByNameResponseDTO.setUserDepartmentVOList(userDepartmentVOList);
         return getAllByNameResponseDTO;
+    }
+
+    /**
+     * 演示Counter变量打印出来的metrics
+     * output:
+     *    get.user.by.name{name=ivy} throughput=0.016667/s
+     * 看起来跟想象的不一样，不一样打印 1 才对吗？为什么会有throughput?
+     * @param name
+     */
+    private void incGetUserByNameCount(String name) {
+        Counter counter = Counter
+                .builder("get.user.by.name")
+                .description("indicates get user by name api call count")
+                .tags("name", name)
+                .register(meterRegistry);
+        counter.increment(1.0);
     }
 
 }
