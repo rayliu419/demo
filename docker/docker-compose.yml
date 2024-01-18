@@ -1,0 +1,44 @@
+version: '3'
+
+# 使用docker-compose自动化创建demo应用的依赖
+
+services:
+  prometheus:
+    image: prom/prometheus:v2.48.1
+    container_name: prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml # 映射本地的Prometheus配置文件到容器内的/etc/prometheus/prometheus.yml
+      - ./prometheus_volume:/prometheus # prometheus数据文件
+    extra_hosts:
+      - host.docker.internal:host-gateway # docker部署的prometheus访问宿主机设置
+
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_SECURITY_ADMIN_USER=admin
+    volumes:
+      - ./grafana_volume:/var/lib/grafana # grafana数据文件
+    depends_on:
+      - prometheus
+
+  mysql:
+    image: mysql:latest
+    container_name: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+      MYSQL_DATABASE: demo
+      MYSQL_USER: demo
+      MYSQL_PASSWORD: 123456
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./mysql_volume:/var/lib/mysql  # mysql的数据文件
+      # 启动以后会执行的sql脚本，注意当首次启动以后，这个脚本不再会执行
+      # 当前这种方式并不完美，对于新加入的表，还是得重新手动的创建。
+      - ./MetaSql.sql:/docker-entrypoint-initdb.d/init.sql

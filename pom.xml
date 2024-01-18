@@ -95,11 +95,15 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
-
+		<!--		spring boot连接Prometheus依赖-->
 		<dependency>
 			<groupId>io.micrometer</groupId>
-			<artifactId>micrometer-core</artifactId>
-			<version>1.11.5</version>
+			<artifactId>micrometer-registry-prometheus</artifactId>
+		</dependency>
+<!--		开箱即用的多个metrics的库，采用后可自动获取多个指标，此库中已包含micrometer的库 -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
 		</dependency>
 
 	</dependencies>
