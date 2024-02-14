@@ -1,27 +1,36 @@
 #!/bin/bash
 
-# 此脚本用于产生发送的metrics，用来帮助测试Grafana的PromSQL。
+# 此脚本用于产生发送的metrics，用来帮助测试Grafana的PromQL。
 
-# 定义多个API
-apis=(
-    'http://localhost:8080/metrics/api-0'
-    'http://localhost:8080/metrics/api-1'
-    'http://localhost:8080/metrics/api-2'
-    'http://localhost:8080/metrics/api-3'
-    'http://localhost:8080/metrics/api-4'
-    'http://localhost:8080/metrics/api-5'
-    # 添加更多URL...
+# 定义多个URL及其对应的概率，按照不同的概率产生指标
+declare -a urls=(
+    'http://localhost:8080/metrics/api-1 40'
+    'http://localhost:8080/metrics/api-2 30'
+    'http://localhost:8080/metrics/api-3 20'
+    'http://localhost:8080/metrics/api-4 5'
+    'http://localhost:8080/metrics/api-5 5'
 )
 
-# 循环处理每个URL
 while true
 do
-    # 从apis数组中随机选择一个API
-    random_api=${apis[$((RANDOM % ${#apis[@]}))]}
+    # 生成随机数
+    rand=$((RANDOM % 100))
+
+    # 根据概率加权随机选择API
+    selected_url=""
+    total_probability=0
+    for api in "${urls[@]}"; do
+        url=${api% *}
+        probability=${api#* }
+        total_probability=$((total_probability + probability))
+        if ((rand < total_probability)); then
+            selected_url=$url
+            break
+        fi
+    done
 
     # 发送curl请求
-    curl --location "$random_api"
-    # 空行
+    curl --location "$selected_url"
     echo
 
     # 生成随机的毫秒数（在100到1000之间，可以根据需要调整）

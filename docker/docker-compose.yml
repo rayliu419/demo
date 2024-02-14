@@ -15,7 +15,7 @@ services:
       - host.docker.internal:host-gateway # docker部署的prometheus访问宿主机设置
 
   grafana:
-    image: grafana/grafana
+    image: grafana/grafana:10.2.3
     container_name: grafana
     ports:
       - "3000:3000"
@@ -28,6 +28,7 @@ services:
       - prometheus
 
   mysql:
+    # 替换成固定版本
     image: mysql:latest
     container_name: mysql
     environment:
