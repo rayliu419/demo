@@ -1,0 +1,39 @@
+auth_enabled: false
+
+server:
+  http_listen_port: 3100
+  grpc_listen_port: 9096
+
+positions:
+  filename: /loki/positions.yaml
+
+distributor:
+  ring:
+    kvstore:
+      store: inmemory
+
+ingester:
+  wal:
+    enabled: true
+    dir: /loki/wal
+
+  chunk_target_size: 1048576
+
+querier:
+  query_timeout: 1m
+
+frontend:
+  compress_responses: true
+
+storage_config:
+  boltdb_shipper:
+    active_index_directory: /loki/index
+    cache_location: /loki/cache
+    shared_store: filesystem
+  filesystem:
+    directory: /loki/chunks
+
+limits_config:
+  max_streams_per_user: 10000
+  max_query_length: 7d
+  max_query_size: 500MB

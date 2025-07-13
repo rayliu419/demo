@@ -29,8 +29,16 @@ do
         fi
     done
 
-    # 发送curl请求
-    curl --location "$selected_url"
+    # 生成随机的Header参数
+    random_user_id="User-$((RANDOM % 9000 + 1000))"  # 随机生成用户ID，范围是1000到9999
+    random_session_id="Session-$((RANDOM % 9000 + 1000))"  # 随机生成会话ID，范围是1000到9999
+    random_language="en-US"  # 默认语言（可以随机化）
+
+    # 发送curl请求，包含随机的header
+    curl --location "$selected_url" \
+         -H "X-Random-User-ID: $random_user_id" \
+         -H "X-Random-Session-ID: $random_session_id" \
+         -H "Accept-Language: $random_language"
     echo
 
     # 生成随机的毫秒数（在100到1000之间，可以根据需要调整）

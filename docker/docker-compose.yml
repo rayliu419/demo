@@ -26,10 +26,11 @@ services:
       - ./grafana_volume:/var/lib/grafana # grafana数据文件
     depends_on:
       - prometheus
+      - loki
 
   mysql:
     # 替换成固定版本
-    image: mysql:latest
+    image: mysql:8.0
     container_name: mysql
     environment:
       MYSQL_ROOT_PASSWORD: 123456
@@ -43,3 +44,14 @@ services:
       # 启动以后会执行的sql脚本，注意当首次启动以后，这个脚本不再会执行
       # 当前这种方式并不完美，对于新加入的表，还是得重新手动的创建。
       - ./MetaSql.sql:/docker-entrypoint-initdb.d/init.sql
+
+  loki:
+    image: grafana/loki:2.8.1
+    container_name: loki
+    ports:
+      - "3100:3100"
+    volumes:
+      - ./loki.yaml:/etc/loki/loki.yaml # 映射本地的 Loki 配置文件
+      - ./loki_volume:/loki
+    depends_on:
+      - prometheus

@@ -1,6 +1,7 @@
 package com.example.controller;
 
 import io.micrometer.core.annotation.Timed;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -8,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Enumeration;
 import java.util.Random;
 
 /**
@@ -21,7 +23,10 @@ public class MetricsController {
 
     @Timed(value = "metrics api-1")
     @GetMapping("/api-1")
-    public ResponseEntity<String> api1() throws InterruptedException {
+    public ResponseEntity<String> api1(HttpServletRequest httpServletRequest) throws InterruptedException {
+        // test loki
+        logRequest(httpServletRequest);
+
         // 使用Random类生成随机数
         Random random = new Random();
         // 随机睡眠时间
@@ -51,7 +56,10 @@ public class MetricsController {
 
     @Timed(value = "metrics api-2")
     @GetMapping("/api-2")
-    public ResponseEntity<String> api2() throws InterruptedException {
+    public ResponseEntity<String> api2(HttpServletRequest httpServletRequest) throws InterruptedException {
+        // test loki
+        logRequest(httpServletRequest);
+
         // 使用Random类生成随机数
         Random random = new Random();
         Thread.sleep(random.nextInt(10) + 5);
@@ -80,7 +88,10 @@ public class MetricsController {
 
     @Timed(value = "metrics api-3")
     @GetMapping("/api-3")
-    public ResponseEntity<String> api3() throws InterruptedException {
+    public ResponseEntity<String> api3(HttpServletRequest httpServletRequest) throws InterruptedException {
+        // test loki
+        logRequest(httpServletRequest);
+
         // 使用Random类生成随机数
         Random random = new Random();
         Thread.sleep(random.nextInt(20) + 5);
@@ -102,7 +113,10 @@ public class MetricsController {
 
     @Timed(value = "metrics api-4")
     @GetMapping("/api-4")
-    public ResponseEntity<String> api4() throws InterruptedException {
+    public ResponseEntity<String> api4(HttpServletRequest httpServletRequest) throws InterruptedException {
+        // test loki
+        logRequest(httpServletRequest);
+
         // 使用Random类生成随机数
         Random random = new Random();
         Thread.sleep(random.nextInt(30) + 5);
@@ -124,10 +138,34 @@ public class MetricsController {
 
     @Timed(value = "metrics api-5")
     @GetMapping("/api-5")
-    public ResponseEntity<String> api5() throws InterruptedException {
+    public ResponseEntity<String> api5(HttpServletRequest httpServletRequest) throws InterruptedException {
+        // test loki
+        logRequest(httpServletRequest);
+
         Random random = new Random();
         Thread.sleep(random.nextInt(50) + 5);
         // 模拟正常情况
         return new ResponseEntity<>("api-5: Success", HttpStatus.OK);
+    }
+
+    private void logRequest(HttpServletRequest httpServletRequest) {
+        // 获取请求的 URL 信息
+        String requestUrl = httpServletRequest.getRequestURL().toString();
+
+        // 获取所有的 Header
+        Enumeration<String> headerNames = httpServletRequest.getHeaderNames();
+
+        // 拼接 header 信息
+        StringBuilder headersInfo = new StringBuilder();
+        while (headerNames.hasMoreElements()) {
+            String headerName = headerNames.nextElement();
+            String headerValue = httpServletRequest.getHeader(headerName);
+            headersInfo.append(headerName).append(": ").append(headerValue).append(", ");
+        }
+        if (!headersInfo.isEmpty()) {
+            headersInfo.delete(headersInfo.length() - 2, headersInfo.length());  // 删除最后两个字符 ", "
+        }
+
+        log.info(requestUrl + " " + headersInfo.toString());
     }
 }

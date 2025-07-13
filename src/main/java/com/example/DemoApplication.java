@@ -1,6 +1,6 @@
 package com.example;
 
-import org.example.export.EnableFromAnnotation;
+//import org.example.export.EnableFromAnnotation;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -23,7 +23,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 // 让第三方Bean生效的第一种方法：直接初始化第三方库的切面Bean
 // @Import(org.example.interceptor.ThirdLibLogInterceptor.class)
 // 实际上一般很少会直接Import某个类，而是通过只Enable某个外面jar的注解，在那个注解中Import需要创建的Bean。
-@EnableFromAnnotation
+//@EnableFromAnnotation
 @MapperScan("com.example.dao.mysql") // mybatis的Scan Mapper
 @MapperScan("com.example.repo.mysql") // mybatis的repo scan mapper
 @EnableJpaRepositories(basePackages = "com.example.dao.mysql.repository")
